@@ -1,17 +1,18 @@
 import { useState } from 'react';
+import ActionPanel from '../components/ActionPanel';
 
 const EDUCATIONS = [{
-    id: crypto.randomUUID(),
-    title: "Bachelor of Computer Science and Mathematics",
-    school: "Bina Nusantara University",
-    start: "February 1999",
-    end: "October 2003"
-}, {
     id: crypto.randomUUID(),
     title: "Master of Computer and Information Science",
     school: "Auckland University of Technology",
     start: "July 2006",
     end: "February 2009"
+}, {
+    id: crypto.randomUUID(),
+    title: "Bachelor of Computer Science and Mathematics",
+    school: "Bina Nusantara University",
+    start: "February 1999",
+    end: "October 2003"
 }];
 
 export default function Educations() {
@@ -20,15 +21,6 @@ export default function Educations() {
     const [educations, setEducations] = useState([...initialData]);
     const [mode, setMode] = useState("view");
 
-    const createNewEducationEntry = () => ({
-        id: crypto.randomUUID(),
-        title: "",
-        school: "",
-        start: "",
-        end: ""
-    });
-
-
     // HANDLERS
 
     function handleEdit() {
@@ -36,11 +28,17 @@ export default function Educations() {
     }
 
     function handleAdd() {
-        setMode("add");
-
-        const newEducationEntry = createNewEducationEntry();
+        
+        const newEducationEntry = {
+            id: crypto.randomUUID(),
+            title: "",
+            school: "",
+            start: "",
+            end: ""
+        };
 
         setEducations((prev) => [...prev, newEducationEntry]);
+        setMode("add");
     }
 
     function handleCancel() {
@@ -66,54 +64,32 @@ export default function Educations() {
         );
     }
 
-    // SUB COMPONENTS
+    // SUB COMPONENT
 
     const educationList = educations.map((education) => {
         
-        const educationTitleDisplay = mode !== "view" ? <input value={education.title} name="title" onChange={(e) => handleInputChange(e, education.id)} /> : education.title;
-        const educationSchoolDisplay = mode !== "view" ? <input value={education.school} name="school" onChange={(e) => handleInputChange(e, education.id)} /> : education.school;
-        const educationStartDisplay = mode !== "view" ? <input value={education.start} name="start" onChange={(e) => handleInputChange(e, education.id)} /> : education.start;
-        const educationEndDisplay = mode !== "view" ? <input value={education.end} name="end" onChange={(e) => handleInputChange(e, education.id)} /> : education.end;
+        const educationTitleDisplay = mode !== "view" ? <input className="block px-2 py-1 mb-3 w-full max-w-sm rounded border-1" type="text" value={education.title} name="title" placeholder="Title" onChange={(e) => handleInputChange(e, education.id)} /> : <h3 className="font-bold text-lg">{education.title}</h3>;
+        const educationSchoolDisplay = mode !== "view" ? <input className="block px-2 py-1 mb-3 w-full max-w-sm rounded border-1" type="text" value={education.school} name="school" placeholder="School" onChange={(e) => handleInputChange(e, education.id)} /> : <h4 className="italic">{education.school}</h4>;
+        const educationStartDisplay = mode !== "view" ? <input className="inline-block px-2 py-1 w-1/3 max-width-sm rounded border-1" type="text" value={education.start} name="start" placeholder="Start" onChange={(e) => handleInputChange(e, education.id)} /> : education.start;
+        const educationEndDisplay = mode !== "view" ? <input className="inline-block px-2 py-1 w-1/3 max-width-sm rounded border-1" type="text" value={education.end} name="end" placeholder="End" onChange={(e) => handleInputChange(e, education.id)} /> : education.end;
         
         return(
-            <li key={education.id}>
-                <h3>{educationTitleDisplay}</h3>
-                <h4>{educationSchoolDisplay}</h4>
+            <li key={education.id} className="mb-5">
+                {educationTitleDisplay}
+                {educationSchoolDisplay}
                 <p>{educationStartDisplay} - {educationEndDisplay}</p>
             </li>
         )
     });
 
-    const ActionPanel = () => {
-
-        if (mode !== "view") {
-
-            const saveButtonText = mode == "edit" ? "Save" : "Submit";
-
-            return(
-                <>
-                    <button type="button" onClick={handleCancel}>Cancel</button>
-                    <button type="button" onClick={handleSave}>{saveButtonText}</button>
-                </>
-            )
-        }
-
-        return(
-            <>
-                <button type="button" onClick={handleEdit}>Edit</button>
-                <button type="button" onClick={handleAdd}>Add</button>
-            </>
-        )
-    };
-
     // RENDER
+
     return(
         <>
             <ul>
                 {educationList}
             </ul>
-            <br/>
-            <ActionPanel />
+            <ActionPanel mode={mode} editCallback={handleEdit} addCallback={handleAdd} saveCallback={handleSave} cancelCallback={handleCancel} />
         </>
     )
 }

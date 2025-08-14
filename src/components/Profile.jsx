@@ -34,44 +34,41 @@ export default function Profile() {
 
 
     // SUB COMPONENTS
-    const nameDisplay = edit ? <input value={profile.name} name="name" onChange={handleInputChange} /> : profile.name;
-    const emailDisplay = edit ? <input value={profile.email} name="email" onChange={handleInputChange} /> : profile.email;
-    const phoneDisplay = edit ? <input value={profile.phone} name="phone" onChange={handleInputChange} /> : profile.phone;
+    const nameDisplay = edit ? <input className="px-2 py-1 w-full max-w-sm rounded border-1" type="text" value={profile.name} name="name" onChange={handleInputChange} /> : profile.name;
+    const emailDisplay = edit ? <input className="px-2 py-1 w-full max-w-sm rounded border-1" type="email" value={profile.email} name="email" onChange={handleInputChange} /> : profile.email;
+    const phoneDisplay = edit ? <input className="px-2 py-1 w-full max-w-sm rounded border-1" type="text" value={profile.phone} name="phone" onChange={handleInputChange} /> : profile.phone;
 
     const ActionPanel = () => {
 
         if (edit) {
             return(
                 <>
-                    <button type="button" onClick={handleCancel}>Cancel</button>
-                    <button type="button" onClick={handleSave}>Save</button>
+                    <button className="px-4 py-1.5 bg-transparent hover:bg-green-700 font-semibold text-green-500 hover:text-gray-100 rounded-md border-1 border-green-500 hover:border-green-700 transition-colors cursor-pointer" type="button" onClick={handleCancel}>Cancel</button>
+                    <button className="px-4 py-1.5 bg-green-500 hover:bg-green-700 font-semibold text-gray-100 rounded-md border-1 border-green-500 hover:border-green-700 transition-colors cursor-pointer" type="button" onClick={handleSave}>Save</button>
                 </>
             )
         }
 
         return(
-           <button type="button" onClick={handleEdit}>Edit</button>
+           <button className="px-4 py-1.5 bg-green-500 hover:bg-green-700 font-bold text-gray-100 rounded-md border-1 border-green-500 hover:border-green-700 transition-colors cursor-pointer" type="button" onClick={handleEdit}>Edit</button>
         )
     };
 
     // RENDER
     return(
         <>
-            <div>
-                <label>Name:</label><br/>
+            <div className="mb-3">
+                <label className="block mb-0.5 font-bold">Name:</label>
                 {nameDisplay}
             </div>
-            <br/>
-            <div>
-                <label>Email:</label><br/>
+            <div className="mb-3">
+                <label className="block mb-0.5 font-bold">Email:</label>
                 {emailDisplay}
             </div>
-            <br/>
-            <div>
-                <label>Phone:</label><br/>
+            <div className="mb-5">
+                <label className="block mb-0.5 font-bold">Phone:</label>
                 {phoneDisplay}
             </div>
-            <br/>
             <ActionPanel />
         </>
     )
